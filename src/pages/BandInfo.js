@@ -67,11 +67,11 @@ export default function BandInfo() {
 		<div>
 			{localBand ? (
 				<div>
-					<p>id: {localBand.id}</p>
-					<p>name: {localBand.name}</p>
-					<p>genreCode: {localBand.genreCode}</p>
-					<p>year: {localBand.year}</p>
-					<p>country: {localBand.country}</p>
+					<h1>{localBand.name}</h1>
+					<p>ID: {localBand.id}</p>
+					<p>Genre: {localBand.genreCode}</p>
+					<p>Year: {localBand.year}</p>
+					<p>Country: {localBand.country}</p>
 					{/* <p>band members: {localBand.members.length}</p> */}
 					<p>Albums</p>
 					{localAlbums.length ? (
