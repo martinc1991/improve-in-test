@@ -20,7 +20,7 @@ export default function NavBar() {
 
 	return (
 		<Navbar bg='dark' variant='dark' className='sticky-top'>
-			<Link to='/'>
+			<Link to='/home'>
 				<Navbar.Brand>
 					<MusicNoteList className='mx-3' color='teal' size={30} />
 				</Navbar.Brand>
@@ -33,7 +33,7 @@ export default function NavBar() {
 				)}
 			</Nav>
 			<Form inline>
-				{/* ----------------------- Uncomment this to development mode ----------------------- */}
+				{/* ----------------------- Uncomment this in development mode ----------------------- */}
 				{/* <Button
 					variant='danger'
 					size='sm'

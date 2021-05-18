@@ -74,7 +74,7 @@ export default function Home() {
 
 	const filterHandler = (e) => {
 		setSearch(e.target.value.trim());
-		// If the TextInput filter is empty, set filteredBands equal to events
+		// If the TextInput filter is empty, set filteredBands equal to bands
 		if (!e.target.value) {
 			setFilteredBands(bands);
 		} else {
@@ -82,13 +82,12 @@ export default function Home() {
 			let filteredBands = bands.filter((band) => {
 				return band.name.toLowerCase().includes(e.target.value.trim()) || band.country.toLowerCase().includes(e.target.value.trim()) || getGenre(band.genreCode).toLowerCase().includes(e.target.value.trim());
 			});
-			// getGenre(band.genreCode).toLowerCase().includes(e.target.value.trim())
 			setFilteredBands(filteredBands);
 		}
 	};
 
 	// Sorting
-	const sortByBandNameHandler = (e) => {
+	const sortByBandNameHandler = () => {
 		if (sortByNameOrder === 'desc') {
 			setSortByNameOrder('asc');
 		} else {
@@ -108,19 +107,19 @@ export default function Home() {
 		setBands(arr);
 	};
 	const sortByBandName = function (a, b) {
-		var nameA = a.name.toUpperCase(); // ignore upper and lowercase
-		var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+		var nameA = a.name.toUpperCase();
+		var nameB = b.name.toUpperCase();
 		if (nameA < nameB) {
 			return sortByNameOrder === 'asc' ? -1 : 1;
 		}
 		if (nameA > nameB) {
 			return sortByNameOrder === 'asc' ? 1 : -1;
 		}
-		// names must be equal
+
 		return 0;
 	};
 
-	const sortByNumberOfMembersHandler = (e) => {
+	const sortByNumberOfMembersHandler = () => {
 		if (sortByNumberOfMembersOrder === 'desc') {
 			setSortByNumberOfMembersOrder('asc');
 		} else {
@@ -149,7 +148,7 @@ export default function Home() {
 		}
 	};
 
-	const sortByYearHandler = (e) => {
+	const sortByYearHandler = () => {
 		if (sortByYearOrder === 'desc') {
 			setSortByYearOrder('asc');
 		} else {
@@ -178,7 +177,7 @@ export default function Home() {
 		}
 	};
 
-	const sortByCountryHandler = (e) => {
+	const sortByCountryHandler = () => {
 		if (sortByCountryOrder === 'desc') {
 			setSortByCountryOrder('asc');
 		} else {
@@ -198,19 +197,19 @@ export default function Home() {
 		setBands(arr);
 	};
 	const sortByCountry = function (a, b) {
-		var nameA = a.country.toUpperCase(); // ignore upper and lowercase
-		var nameB = b.country.toUpperCase(); // ignore upper and lowercase
+		var nameA = a.country.toUpperCase();
+		var nameB = b.country.toUpperCase();
 		if (nameA < nameB) {
 			return sortByCountryOrder === 'asc' ? -1 : 1;
 		}
 		if (nameA > nameB) {
 			return sortByCountryOrder === 'asc' ? 1 : -1;
 		}
-		// names must be equal
+
 		return 0;
 	};
 
-	const sortByIdHandler = (e) => {
+	const sortByIdHandler = () => {
 		if (sortByIdOrder === 'desc') {
 			setSortByIdOrder('asc');
 		} else {
@@ -239,7 +238,7 @@ export default function Home() {
 		}
 	};
 
-	const sortByGenreHandler = (e) => {
+	const sortByGenreHandler = () => {
 		if (sortByGenreOrder === 'desc') {
 			setSortByGenreOrder('asc');
 		} else {
@@ -259,15 +258,15 @@ export default function Home() {
 		setBands(arr);
 	};
 	const sortByGenre = function (a, b) {
-		var nameA = a.genreCode.toUpperCase(); // ignore upper and lowercase
-		var nameB = b.genreCode.toUpperCase(); // ignore upper and lowercase
+		var nameA = a.genreCode.toUpperCase();
+		var nameB = b.genreCode.toUpperCase();
 		if (nameA < nameB) {
 			return sortByGenreOrder === 'asc' ? -1 : 1;
 		}
 		if (nameA > nameB) {
 			return sortByGenreOrder === 'asc' ? 1 : -1;
 		}
-		// names must be equal
+
 		return 0;
 	};
 
@@ -337,7 +336,6 @@ export default function Home() {
 					)}
 				</tbody>
 			</Table>
-			{/* Table */}
 		</div>
 	);
 }
