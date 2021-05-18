@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
 
 export default function Home() {
 	const [dataLoaded, setDataLoaded] = useState(false);
@@ -24,19 +25,17 @@ export default function Home() {
 	useEffect(() => {
 		// Bands
 		if (localStorage.getItem('bandsInfo')) {
-			console.log('getting INFO from localStorage');
+			console.log('getting BANDS from localStorage');
 			bandsInfo = localStorage.getItem('bandsInfo');
 			bandsInfo = JSON.parse(bandsInfo);
 			setBands(bandsInfo);
 			setFilteredBands(bandsInfo);
-			// console.log(bandsInfo);
 		} else {
-			console.log('getting INFO from SERVER');
+			console.log('getting BANDS from API');
 			axios
 				.get('https://my-json-server.typicode.com/improvein/dev-challenge/bands')
 				.then((response) => {
 					bandsInfo = response.data;
-					// console.log(bandsInfo);
 					setBands(bandsInfo);
 					setFilteredBands(bandsInfo);
 					localStorage.setItem('bandsInfo', JSON.stringify(bandsInfo));
@@ -47,12 +46,12 @@ export default function Home() {
 		}
 		// Genres
 		if (localStorage.getItem('genresInfo')) {
-			console.log('getting INFO from localStorage');
+			console.log('getting GENRES from localStorage');
 			genresInfo = localStorage.getItem('genresInfo');
 			genresInfo = JSON.parse(genresInfo);
 			setGenres(genresInfo);
 		} else {
-			console.log('getting INFO from SERVER');
+			console.log('getting GENRES from API');
 			axios
 				.get('https://my-json-server.typicode.com/improvein/dev-challenge/genre')
 				.then((response) => {
@@ -81,9 +80,9 @@ export default function Home() {
 		} else {
 			// Filtered bands
 			let filteredBands = bands.filter((band) => {
-				return band.name.toLowerCase().includes(e.target.value.trim());
-				// || band.members.toLowerCase().includes(e.target.value.trim()); // todo: ver si agregar filtro por miembros
+				return band.name.toLowerCase().includes(e.target.value.trim()) || band.country.toLowerCase().includes(e.target.value.trim()) || getGenre(band.genreCode).toLowerCase().includes(e.target.value.trim());
 			});
+			// getGenre(band.genreCode).toLowerCase().includes(e.target.value.trim())
 			setFilteredBands(filteredBands);
 		}
 	};
@@ -274,38 +273,40 @@ export default function Home() {
 
 	return (
 		<div>
-			<div>
-				<h1>Bands</h1>
-			</div>
-			<div>
-				<label htmlFor='filter'>Filter: </label>
-				<input type='text' id='filter' onChange={filterHandler} />
+			<Container className='mb-3'>
+				<div className='my-2'>
+					<h1 className='text-info'>Bands</h1>
+				</div>
+				<div>
+					<label htmlFor='filter' className='mx-2'>
+						Filter:
+					</label>
+					<input type='text' id='filter' placeholder='Band, country or genre' className='w-25' onChange={filterHandler} />
 
-				{/* <button onClick={sortByBandNameHandler}>Sort by Band Name</button> */}
-				<Button variant='info' size='sm' onClick={sortByIdHandler}>
-					Sort by ID
-				</Button>
-				<Button variant='info' size='sm' onClick={sortByBandNameHandler}>
-					Sort by Band Name
-				</Button>
-				<Button variant='info' size='sm' onClick={sortByYearHandler}>
-					Sort by Year
-				</Button>
-				<Button variant='info' size='sm' onClick={sortByCountryHandler}>
-					Sort by Country
-				</Button>
-				<Button variant='info' size='sm' onClick={sortByGenreHandler}>
-					Sort by Genre
-				</Button>
-				<Button variant='info' size='sm' onClick={sortByNumberOfMembersHandler}>
-					Sort by Members
-				</Button>
-			</div>
-			<br />
+					<Button variant='info' size='sm' className='mx-1 ml-5 mb-1' onClick={sortByIdHandler}>
+						Sort by ID
+					</Button>
+					<Button variant='info' size='sm' className='mx-1 mb-1' onClick={sortByBandNameHandler}>
+						Sort by Band Name
+					</Button>
+					<Button variant='info' size='sm' className='mx-1 mb-1' onClick={sortByYearHandler}>
+						Sort by Year
+					</Button>
+					<Button variant='info' size='sm' className='mx-1 mb-1' onClick={sortByCountryHandler}>
+						Sort by Country
+					</Button>
+					<Button variant='info' size='sm' className='mx-1 mb-1' onClick={sortByGenreHandler}>
+						Sort by Genre
+					</Button>
+					<Button variant='info' size='sm' className='mx-1 mb-1' onClick={sortByNumberOfMembersHandler}>
+						Sort by Members
+					</Button>
+				</div>
+			</Container>
 
 			{/* Table */}
-			<Table responsive size='sm' hover striped>
-				<thead>
+			<Table responsive size='sm' hover striped className='table-borderless'>
+				<thead className='bg-info my-4'>
 					<tr>
 						{Array.from(['ID', 'Name', 'Year', 'Country', 'Genre', 'Members']).map((colName, index) => (
 							<th key={index}>{colName}</th>
@@ -316,7 +317,7 @@ export default function Home() {
 					{filteredBands && filteredBands.length ? (
 						filteredBands.map((band, key) => {
 							return (
-								<tr key={key}>
+								<tr key={key} className={`${key % 2 ? 'table-info' : ''}`}>
 									<td>{band.id}</td>
 									<td>
 										<Link to={`/bands/${band.id}`}>{band.name}</Link>

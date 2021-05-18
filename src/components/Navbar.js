@@ -5,6 +5,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
+import { MusicNoteList } from 'react-bootstrap-icons';
 
 export default function NavBar() {
 	const { isAuth, setIsAuth } = useContext(UserContext);
@@ -18,24 +19,38 @@ export default function NavBar() {
 	};
 
 	return (
-		<Navbar bg='dark' variant='dark'>
+		<Navbar bg='dark' variant='dark' className='sticky-top'>
 			<Link to='/'>
-				<Navbar.Brand>Navbar</Navbar.Brand>
+				<Navbar.Brand>
+					<MusicNoteList className='mx-3' color='teal' size={30} />
+				</Navbar.Brand>
 			</Link>
 			<Nav className='mr-auto'>
-				<Link to='/home'>Home</Link>
-				<Link to='#features'>Features</Link>
-				<Link to='#pricing'>Pricing</Link>
+				{isAuth && (
+					<Link to='/home' className='text-info'>
+						Home
+					</Link>
+				)}
 			</Nav>
 			<Form inline>
+				{/* ----------------------- Uncomment this to development mode ----------------------- */}
+				{/* <Button
+					variant='danger'
+					size='sm'
+					type='submit'
+					className='mx-2'
+					onClick={() => {
+						localStorage.clear();
+						console.log('localStorage is now empty');
+					}}>
+					Clear localStorage
+				</Button> */}
 				{isAuth ? (
-					<Button variant='outline-info' onClick={logout}>
+					<Button variant='outline-info' size='sm' onClick={logout}>
 						Logout
 					</Button>
 				) : (
-					<Button variant='outline-info' onClick={login}>
-						Login
-					</Button>
+					<div></div>
 				)}
 			</Form>
 		</Navbar>
