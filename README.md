@@ -33,10 +33,10 @@ npm start
 
 ## Notes
 
-- Since the challenge wasn´t about making a great UI, I just added Bootstrap to make it easier.
+- Since the challenge wasn´t about making a great UI, I just added Bootstrap to make it easier to get a decent UI (also, i didn't make it responsive yet).
 
 ## To-Do List
 
-- Code refactoring.
 - Add spinners to show while the app is loading info form the server.
 - Add icons to the sorting buttons.
+- Make it responsive.
