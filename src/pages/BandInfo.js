@@ -1,14 +1,12 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Jumbotron from 'react-bootstrap/Jumbotron';
 import Container from 'react-bootstrap/Container';
+import { getInfoFromServer, getGenre } from '../utils/utils.js';
 
 export default function BandInfo() {
 	let { id } = useParams();
 	id = parseInt(id);
 
-	const [dataLoaded, setDataLoaded] = useState(false);
 	const [genres, setGenres] = useState([]);
 	const [localBand, setLocalBand] = useState({});
 	const [localAlbums, setLocalAlbums] = useState({});
@@ -17,96 +15,81 @@ export default function BandInfo() {
 	let genresInfo = '';
 
 	useEffect(() => {
-		// Get bands info
-		if (localStorage.getItem('bandsInfo')) {
-			console.log('getting BANDS from localStorage');
-			bandsInfo = localStorage.getItem('bandsInfo');
-			bandsInfo = JSON.parse(bandsInfo);
-			bandsInfo = bandsInfo.filter((band) => {
-				return band.id === id;
-			})[0];
-			setLocalBand(bandsInfo);
-		} else {
-			console.log('getting BANDS from API');
-			axios
-				.get('https://my-json-server.typicode.com/improvein/dev-challenge/bands')
-				.then((response) => {
-					bandsInfo = response.data;
+		(async () => {
+			// Get bands info
+			if (localStorage.getItem('bandsInfo')) {
+				console.log('getting BANDS from localStorage');
+				bandsInfo = localStorage.getItem('bandsInfo');
+				bandsInfo = JSON.parse(bandsInfo);
+				bandsInfo = bandsInfo.filter((band) => {
+					return band.id === id;
+				})[0];
+				setLocalBand(bandsInfo);
+			} else {
+				try {
+					bandsInfo = await getInfoFromServer('bands');
 					localStorage.setItem('bandsInfo', JSON.stringify(bandsInfo));
-					setLocalBand(bandsInfo[0]);
-				})
-				.catch((error) => {
+					bandsInfo = bandsInfo.filter((band) => {
+						return band.id === id;
+					})[0];
+					setLocalBand(bandsInfo);
+				} catch (error) {
 					console.log(error);
+				}
+			}
+			// Get albums info
+			if (localStorage.getItem('albumsInfo')) {
+				console.log('getting ALBUMS from localStorage');
+				localAlbumsInfo = localStorage.getItem('albumsInfo');
+				localAlbumsInfo = JSON.parse(localAlbumsInfo);
+				localAlbumsInfo = localAlbumsInfo.filter((album) => {
+					return album.bandId === id;
 				});
-		}
-		// Get albums info
-		if (localStorage.getItem('albumsInfo')) {
-			console.log('getting ALBUMS from localStorage');
-			localAlbumsInfo = localStorage.getItem('albumsInfo');
-			localAlbumsInfo = JSON.parse(localAlbumsInfo);
-			localAlbumsInfo = localAlbumsInfo.filter((album) => {
-				return album.bandId === id;
-			});
-			setLocalAlbums(localAlbumsInfo);
-		} else {
-			console.log('getting ALBUMS from API');
-			axios
-				.get('https://my-json-server.typicode.com/improvein/dev-challenge/albums')
-				.then((response) => {
-					localAlbumsInfo = response.data;
+				setLocalAlbums(localAlbumsInfo);
+			} else {
+				try {
+					localAlbumsInfo = await getInfoFromServer('albums');
 					localStorage.setItem('albumsInfo', JSON.stringify(localAlbumsInfo));
 					localAlbumsInfo = localAlbumsInfo.filter((album) => {
 						return album.bandId === id;
 					});
 					setLocalAlbums(localAlbumsInfo);
-				})
-				.catch((error) => {
+				} catch (error) {
 					console.log(error);
-				});
-		}
-		// Genres
-		if (localStorage.getItem('genresInfo')) {
-			console.log('getting GENRES from localStorage');
-			genresInfo = localStorage.getItem('genresInfo');
-			genresInfo = JSON.parse(genresInfo);
-			setGenres(genresInfo);
-		} else {
-			console.log('getting GENRES from API');
-			axios
-				.get('https://my-json-server.typicode.com/improvein/dev-challenge/genre')
-				.then((response) => {
-					genresInfo = response.data;
+				}
+			}
+			// Genres
+			if (localStorage.getItem('genresInfo')) {
+				console.log('getting GENRES from localStorage');
+				genresInfo = localStorage.getItem('genresInfo');
+				genresInfo = JSON.parse(genresInfo);
+				setGenres(genresInfo);
+			} else {
+				try {
+					genresInfo = await getInfoFromServer('bands');
 					setGenres(genresInfo);
 					localStorage.setItem('genresInfo', JSON.stringify(genresInfo));
-				})
-				.catch((error) => {
+				} catch (error) {
 					console.log(error);
-				});
-		}
+				}
+			}
+		})();
 	}, []);
-
-	const getGenre = (genreCode) => {
-		let genreArr = genres.filter((genre) => {
-			return genre.code === genreCode;
-		});
-		return genreArr[0]?.name || 'Goth Metal'; // 'Within Temptation' has no genre associated from the genre endpoint
-	};
 
 	return (
 		<div>
 			<Container className='px-5 pt-3'>
 				{localBand ? (
 					<div>
-						<h1>
+						<h1 className='text-info'>
 							{localBand.name} (created in {localBand.year})
 						</h1>
 						<p>
-							<strong>Genre:</strong> {getGenre(localBand.genreCode)}
+							<strong>Genre:</strong> {getGenre(localBand.genreCode, genres)}
 						</p>
 						<p>
 							<strong>Country:</strong> {localBand.country}
 						</p>
-						{/* <p>band members: {localBand.members.length}</p> */}
 						<p>
 							<strong>Albums:</strong>
 						</p>

@@ -10,10 +10,6 @@ import { MusicNoteList } from 'react-bootstrap-icons';
 export default function NavBar() {
 	const { isAuth, setIsAuth } = useContext(UserContext);
 
-	const login = () => {
-		setIsAuth(true);
-	};
-
 	const logout = () => {
 		setIsAuth(false);
 	};
@@ -33,7 +29,7 @@ export default function NavBar() {
 				)}
 			</Nav>
 			<Form inline>
-				{/* ----------------------- Uncomment this in development mode ----------------------- */}
+				{/* ----------------------- Uncomment this <Button> in development mode ----------------------- */}
 				{/* <Button
 					variant='danger'
 					size='sm'

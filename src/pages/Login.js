@@ -51,7 +51,7 @@ export default function Login() {
 							{`Why don't you try "${username}" for the password?`}
 						</Form.Text>
 					)}
-					<Button variant='info' size='sm' name='submit' onClick={handleForm}>
+					<Button variant='info' size='sm' name='submit' disabled={!username || !password} onClick={handleForm}>
 						Submit
 					</Button>
 				</Form>
