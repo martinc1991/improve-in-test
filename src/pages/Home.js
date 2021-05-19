@@ -173,7 +173,14 @@ export default function Home() {
 				<thead className='bg-info my-4'>
 					<tr>
 						{categories.map((colName, index) => (
-							<th key={index}>{colName.toLocaleUpperCase()}</th>
+							<th
+								key={index}
+								style={{ cursor: 'pointer' }}
+								onClick={() => {
+									sortHandler(colName);
+								}}>
+								{colName.toLocaleUpperCase()}
+							</th>
 						))}
 					</tr>
 				</thead>
